@@ -34,15 +34,16 @@ export const createShort = async (short: Shorts) => {
   ]);
 };
 
-export const updateShort = async (short: Shorts) => {
-  return execute<OkPacket>(shortsQueries.updateShort, [
-    short.name,
-    short.item, // Updated to use 'item' instead of 'artist'
-    short.description,
-    short.size,
-  ]);
-};
+
 
 export const deleteShort = async (shortId: number) => {
   return execute<OkPacket>(shortsQueries.deleteShort, [shortId]);
+};
+
+export const updateShortById = async (shortId: number, updates: Partial<Shorts>) => {
+  return execute<OkPacket>(shortsQueries.updateShortById, [
+      updates.size,
+      updates.description,
+      shortId,
+  ]);
 };

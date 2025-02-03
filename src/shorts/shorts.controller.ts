@@ -78,20 +78,7 @@ export const createShort: RequestHandler = async (req: Request, res: Response) =
     }
 };
 
-export const updateShort: RequestHandler = async (req: Request, res: Response) => {
-  try {
-      const okPacket: OkPacket = await ShortsDao.updateShort(req.body);
-      console.log('req.body', req.body);
-      console.log('short', okPacket);
 
-      res.status(200).json(okPacket);
-  } catch (error) {
-      console.error('[shorts.controller][updateShort] [Error]', error);
-      res.status(500).json({
-          message: 'There was an error when updating shorts',
-      });
-  }
-};
 
 export const deleteShort: RequestHandler = async (req: Request, res: Response) => {
     try {
@@ -111,3 +98,19 @@ export const deleteShort: RequestHandler = async (req: Request, res: Response) =
     }
 };
 
+export const updateShortById: RequestHandler = async (req: Request, res: Response) => {
+  try {
+      const shortId = parseInt(req.params.id as string);
+      if (!Number.isNaN(shortId)) {
+          const updateResult = await ShortsDao.updateShortById(shortId, req.body);
+          res.status(200).json(updateResult);
+      } else {
+          throw new Error("Integer expected for id");
+      }
+  } catch (error) {
+      console.error('[shorts.controller][updateShortById][Error]', error);
+      res.status(500).json({
+          message: 'There was an error when updating shorts',
+      });
+  }
+};
